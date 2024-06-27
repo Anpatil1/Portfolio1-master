@@ -155,7 +155,7 @@ button:focus {
 }
 
 .logo {
-  max-height: 160px; /* Adjust this value as needed */
+  max-height: 100px; /* Adjust this value as needed */
   max-width: 90px;  /* Adjust this value as needed */
   height: auto;
   width: auto;
