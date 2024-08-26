@@ -85,8 +85,8 @@ button:focus {
 .navbar {
   position: fixed !important;
   transition: all 0.3s ease-out 0s !important;
-  padding: 0.3rem 2rem !important;
-  font-size: 1.2rem !important;
+  padding: 0.2rem 1rem !important; /* Reduced padding for smaller height */
+  font-size: 1rem !important; /* Reduced font size */
 }
 
 .navbar-toggler {
@@ -155,11 +155,12 @@ button:focus {
 }
 
 .logo {
-  max-height: 100px; /* Adjust this value as needed */
-  max-width: 90px;  /* Adjust this value as needed */
+  max-height: 80px; /* Adjusted max height */
+  max-width: 70px;  /* Adjusted max width */
   height: auto;
   width: auto;
 }
+
 
 @media (max-width: 767px) {
   .logo {
@@ -171,17 +172,21 @@ button:focus {
 
 .navbar-nav .nav-link {
   color: white !important;
-  padding-right: 1rem !important;
-  padding-left: 1rem !important;
+  padding: 0.5rem 0.8rem !important; /* Reduced padding */
 }
 
 .nav-link {
-  padding: 0.8rem 1rem !important;
+  padding: 0.5rem 0.8rem !important; /* Reduced padding */
 }
 
 @media (max-width: 767px) {
-  .nav-link {
-    padding: 0.7rem 1rem !important;
+  .navbar {
+    padding: 0.5rem 1rem !important; /* Slightly increased padding for mobile view */
+    font-size: 1.2rem !important;
+    background-color: #181a27 !important;
+  }
+  .navbar-nav .nav-item a::after {
+    display: none !important;
   }
 }
 

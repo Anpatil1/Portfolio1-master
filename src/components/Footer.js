@@ -14,11 +14,11 @@ function Footer() {
     <Container fluid className="footer">
       <Row>
         <Col md="4" className="footer-copywright">
-        <h3>Designed and Developed by<a    href="https://github.com/Anpatil1" >Avadhut Nangare-Patil </a> </h3>
+        <h3>Designed and Developed by<a    href="https://github.com/Anpatil1" >@anpatil </a> </h3>
           {/* <h3>Designed and Developed by Avadhut Nangare-Patil</h3> */}
         </Col>
         <Col md="4" className="footer-copywright">
-          <h3>Copyright © {year} ANP</h3>
+          <h3>Copyright © {year} anpatil.tech  </h3>
         </Col>
         <Col md="4" className="footer-body">
           <ul className="footer-icons">
