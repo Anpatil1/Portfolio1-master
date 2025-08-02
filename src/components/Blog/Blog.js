@@ -13,8 +13,7 @@ import {
   TrendingUp,
   Zap,
   Code,
-  Cpu,
-  Smartphone
+  Cpu
 } from "lucide-react";
 
 // Blog data - Latest technology topics
