@@ -25,7 +25,6 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://github.com/Anpatil1"
-                style={{ color: "white" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -35,7 +34,6 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://twitter.com/#"
-                style={{ color: "white" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -45,7 +43,6 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://www.linkedin.com/in/#"
-                style={{ color: "white" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -55,7 +52,6 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://www.instagram.com/#"
-                style={{ color: "white" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >

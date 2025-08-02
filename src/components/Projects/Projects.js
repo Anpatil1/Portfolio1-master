@@ -16,7 +16,7 @@ function Projects() {
         <h1 className="project-heading">
           My Recent <strong className="purple">Works </strong>
         </h1>
-        <p style={{ color: "white" }}>
+        <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", textAlign: "center", maxWidth: "600px", margin: "0 auto" }}>
           Below are some of the recent projects I have worked on, showcasing my skills and expertise in full-stack development and data analysis.
         </p>
         <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>

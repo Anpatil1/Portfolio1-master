@@ -5,20 +5,25 @@ import Container from "react-bootstrap/Container";
 import logo from "../Assets/logo.png";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-import { CgGitFork } from "react-icons/cg";
-import { ImBlog } from "react-icons/im";
+import { motion } from "framer-motion";
+import { useTheme } from "./ThemeProvider";
 import {
-  AiFillStar,
-  AiOutlineHome,
-  AiOutlineFundProjectionScreen,
-  AiOutlineUser,
-} from "react-icons/ai";
-
-import { CgFileDocument } from "react-icons/cg";
+  Home,
+  User,
+  Monitor,
+  FileText,
+  Github,
+  Star,
+  Sun,
+  Moon,
+  Menu,
+  X
+} from "lucide-react";
 
 function NavBar() {
   const [expand, updateExpanded] = useState(false);
   const [navColour, updateNavbar] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
 
   function scrollHandler() {
     if (window.scrollY >= 20) {
@@ -30,24 +35,66 @@ function NavBar() {
 
   window.addEventListener("scroll", scrollHandler);
 
+  const navVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <Navbar
-      expanded={expand}
-      fixed="top"
-      expand="md"
-      className={navColour ? "sticky" : "navbar"}
+    <motion.div
+      variants={navVariants}
+      initial="hidden"
+      animate="visible"
     >
-      <Container>
-        <Navbar.Brand href="/" className="d-flex">
-          <img src={logo} className="img-fluid logo" alt="brand" />
-        </Navbar.Brand>
-        <Navbar.Toggle
-          aria-controls="responsive-navbar-nav"
-          onClick={() => {
-            updateExpanded(expand ? false : "expanded");
-          }}
-        >
-          <span></span>
+      <Navbar
+        expanded={expand}
+        fixed="top"
+        expand="md"
+        className={navColour ? "sticky" : "navbar"}
+      >
+        <Container>
+          <Navbar.Brand href="/" className="d-flex">
+            <motion.img 
+              src={logo} 
+              className="img-fluid logo" 
+              alt="brand"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ duration: 0.3 }}
+            />
+          </Navbar.Brand>
+          
+          <div className="navbar-right-section">
+            <Button
+              variant="outline"
+              className="theme-toggle-btn"
+              onClick={toggleTheme}
+            >
+              <motion.div
+                initial={false}
+                animate={{ rotate: isDarkMode ? 0 : 180 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+              </motion.div>
+            </Button>
+            
+            <Navbar.Toggle
+              aria-controls="responsive-navbar-nav"
+              onClick={() => {
+                updateExpanded(expand ? false : "expanded");
+              }}
+              className="custom-toggle"
+            >
+              {expand ? <X size={20} /> : <Menu size={20} />}
+            </Navbar.Toggle>
+          </div>
           <span></span>
           <span></span>
         </Navbar.Toggle>

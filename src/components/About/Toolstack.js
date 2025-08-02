@@ -1,14 +1,13 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import {
-  SiVisualstudiocode,
   SiPostman,
   SiGithub,
   SiVercel,
   SiPycharm,
   SiIntellijidea,
-  
 } from "react-icons/si";
+import { Code } from "lucide-react";
 
 function Toolstack() {
   return (
@@ -21,7 +20,7 @@ function Toolstack() {
         <SiIntellijidea />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <SiVisualstudiocode />
+        <Code size={80} />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
         <SiPostman />

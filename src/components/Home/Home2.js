@@ -2,11 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import myImg from "../../Assets/avatar.svg";
 import Tilt from "react-parallax-tilt";
-import {
-  AiFillGithub,
-  AiOutlineTwitter,
-  AiFillInstagram,
-} from "react-icons/ai";
+import { AiFillGithub, AiOutlineTwitter, AiFillInstagram } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 
 function Home2() {
@@ -19,42 +15,24 @@ function Home2() {
               LET ME <span className="purple"> INTRODUCE </span> MYSELF
             </h1>
             <p className="home-about-body">
-              I fell in love with programming and I have at least learnt
-              something, I think… 🤷‍♂️
-              <br />
-              <br />I am fluent in classics like
-              <i>
-                <b className="purple"> C,Java,Python,Html,Css, Javascript . </b>
-              </i>
+              I'm a passionate <b className="purple">Junior Software Developer</b> with a strong foundation in full-stack development and a constant drive to learn and improve.
               <br />
               <br />
-              My field of Interest's are building new &nbsp;
-              <i>
-                <b className="purple">Web Technologies and Products </b> and
-                also in areas related to{" "}
-                <b className="purple">
-                  Machine Learning
-                </b>
-              </i>
+              I enjoy building responsive and scalable web applications using technologies like{" "}
+              <b className="purple">Java, Spring Boot,Python, React.js, HTML, CSS, and JavaScript</b>. I am also familiar with databases like <b className="purple">MySQL</b> and tools like <b className="purple">Git, Postman</b>, and <b className="purple">VS Code</b>.
               <br />
-              {/* <br />
-              Whenever possible, I also apply my passion for developing products
-              with <b className="purple">Node.js</b> and
-              <i>
-                <b className="purple">
-                  {" "}
-                  Modern Javascript Library and Frameworks
-                </b>
-              </i>
-              &nbsp; like
-              <i>
-                <b className="purple"> React.js and Next.js</b>
-              </i> */}
+              <br />
+              My core interests include developing efficient and user-friendly software solutions. I'm particularly enthusiastic about{" "}
+              <b className="purple">web technologies, API development</b>, and emerging areas such as{" "}
+              <b className="purple">Machine Learning</b>.
+              <br />
+              <br />
+              I value clean code, collaboration, and continuous learning. As I grow in this field, I aim to contribute to impactful projects and advance my expertise in modern development practices.
             </p>
           </Col>
           <Col md={4} className="myAvtar">
             <Tilt>
-              <img src={myImg} className="img-fluid" alt="avatar" />
+              <img src={myImg} className="img-fluid" alt="Avatar of Avadhut Nangare Patil" />
             </Tilt>
           </Col>
         </Row>
@@ -62,7 +40,8 @@ function Home2() {
           <Col md={12} className="home-about-social">
             <h1>FIND ME ON</h1>
             <p>
-              Feel free to <span className="purple">connect </span>with me
+              I'm always open to connect and collaborate. Let's grow together! <br />
+              <span className="purple">Feel free to reach out</span> on these platforms:
             </p>
             <ul className="home-about-social-links">
               <li className="social-icons">
@@ -77,7 +56,7 @@ function Home2() {
               </li>
               <li className="social-icons">
                 <a
-                  href="https://x.com/nangare_pa61945"
+                  href="https://twitter.com/nangare_pa61945"
                   target="_blank"
                   rel="noreferrer"
                   className="icon-colour  home-social-icons"
@@ -112,4 +91,5 @@ function Home2() {
     </Container>
   );
 }
+
 export default Home2;
