@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-hot-toast";
+import emailjs from '@emailjs/browser';
 import { 
   Mail, 
   Phone, 
@@ -11,7 +12,8 @@ import {
   Github, 
   Linkedin, 
   Twitter,
-  MessageCircle
+  MessageCircle,
+  Loader
 } from "lucide-react";
 import ParticleNew from "../ParticleNew";
 
@@ -22,6 +24,13 @@ function Contact() {
     subject: "",
     message: ""
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // EmailJS configuration - You need to replace these with your actual values
+  const serviceId = "service_8ltmdpp";
+  const templateId = "template_p0xqvvj";
+  const publicKey = "PlY7j-XFgLsXOhjMN";
 
   const handleChange = (e) => {
     setFormData({
@@ -30,11 +39,48 @@ function Contact() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    toast.success("Message sent successfully! I'll get back to you soon.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      // Prepare template parameters for EmailJS
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: "nangareavadhut@gmail.com",
+        reply_to: formData.email
+      };
+
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        publicKey
+      );
+
+      if (response.status === 200) {
+        toast.success("🎉 Message sent successfully! I'll get back to you within 24 hours.");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast.error("❌ Failed to send message. Please try again or contact me directly at nangareavadhut@gmail.com");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const validateForm = () => {
+    return formData.name.trim() !== "" && 
+           formData.email.trim() !== "" && 
+           formData.subject.trim() !== "" && 
+           formData.message.trim() !== "";
   };
 
   const containerVariants = {
@@ -119,6 +165,7 @@ function Contact() {
                               value={formData.name}
                               onChange={handleChange}
                               required
+                              disabled={isSubmitting}
                               className="modern-input"
                               placeholder="Enter your full name"
                             />
@@ -133,6 +180,7 @@ function Contact() {
                               value={formData.email}
                               onChange={handleChange}
                               required
+                              disabled={isSubmitting}
                               className="modern-input"
                               placeholder="your.email@example.com"
                             />
@@ -147,6 +195,7 @@ function Contact() {
                           value={formData.subject}
                           onChange={handleChange}
                           required
+                          disabled={isSubmitting}
                           className="modern-input"
                           placeholder="What's this about?"
                         />
@@ -160,6 +209,7 @@ function Contact() {
                           value={formData.message}
                           onChange={handleChange}
                           required
+                          disabled={isSubmitting}
                           className="modern-input"
                           placeholder="Tell me about your project or how we can work together..."
                           style={{ resize: 'vertical', minHeight: '120px' }}
@@ -167,20 +217,34 @@ function Contact() {
                       </Form.Group>
                       <Button 
                         type="submit" 
+                        disabled={!validateForm() || isSubmitting}
                         className="modern-btn pulse-btn"
                         size="lg"
                         style={{ 
                           width: '100%',
-                          background: 'var(--gradient-secondary)',
+                          background: isSubmitting ? 'var(--text-secondary)' : 'var(--primary-color)',
                           border: 'none',
                           padding: '12px 24px',
-                          borderRadius: 'var(--border-radius)',
+                          borderRadius: '8px',
                           fontWeight: '600',
-                          fontSize: '1.1rem'
+                          fontSize: '1.1rem',
+                          color: 'white',
+                          cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                          opacity: isSubmitting ? 0.7 : 1,
+                          transition: 'all 0.3s ease'
                         }}
                       >
-                        <Send size={20} className="me-2" />
-                        Send Message
+                        {isSubmitting ? (
+                          <>
+                            <Loader size={20} className="me-2" style={{ animation: 'spin 1s linear infinite' }} />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            <Send size={20} className="me-2" />
+                            Send Message
+                          </>
+                        )}
                       </Button>
                     </Form>
                   </Card.Body>
