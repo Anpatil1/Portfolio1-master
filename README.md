@@ -157,9 +157,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **Email**: your.email@example.com
-- **LinkedIn**: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- **GitHub**: [Your GitHub](https://github.com/yourusername)
+- **Email**: nangareavadhut@gmail.com
+- **LinkedIn**: [Your LinkedIn](https://www.linkedin.com/in/avadhut-nangare-patil-470901250/)
+- **GitHub**: [Your GitHub](https://github.com/Anpatil1)
 
 ---
 
