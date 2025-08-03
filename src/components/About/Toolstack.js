@@ -110,7 +110,7 @@ function Toolstack() {
       </h3>
       <Row style={{ justifyContent: "center", marginBottom: "30px" }}>
         {tools.map((tool, index) => (
-          <Col xs={6} md={4} lg={3} xl={2} className="tech-icons" key={index}>
+          <Col xs={4} sm={6} md={4} lg={3} xl={2} className="tech-icons" key={index}>
             <div className="tech-item" style={{ backgroundColor: bgColor }}>
               <div className="tech-icon-wrapper">
                 {tool.icon}

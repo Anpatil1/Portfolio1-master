@@ -4920,6 +4920,22 @@ b.purple {
   transition: all 0.3s ease;
 }
 
+/* Mobile specific adjustments for 3 icons per row */
+@media (max-width: 575px) {
+  .tech-icons {
+    padding: 0.5rem 0.2rem !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+/* Ensure proper spacing for very small screens */
+@media (max-width: 400px) {
+  .tech-icons {
+    padding: 0.3rem 0.1rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+}
+
 .tech-item {
   background: var(--background-card) !important;
   border: 2px solid rgba(79, 70, 229, 0.15) !important;
@@ -5113,29 +5129,38 @@ b.purple {
 }
 
 @media (max-width: 768px) {
+  .tech-icons {
+    padding: 0.75rem 0.25rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
   .tech-item {
-    height: 170px !important;
-    padding: 1.25rem 0.75rem !important;
+    height: 200px !important;
+    padding: 2rem 1rem !important;
+    margin: 0 auto !important;
+    max-width: 180px !important;
   }
   
   .tech-icon-wrapper {
-    width: 55px !important;
-    height: 55px !important;
-    margin-bottom: 1rem !important;
+    width: 75px !important;
+    height: 75px !important;
+    margin-bottom: 1.2rem !important;
   }
   
   .tech-icon-wrapper svg,
   .tech-icon-wrapper i {
-    font-size: 2.5rem !important;
+    font-size: 3.5rem !important;
   }
   
   .tech-name {
-    font-size: 0.9rem !important;
+    font-size: 1.1rem !important;
     font-weight: 600 !important;
+    line-height: 1.3 !important;
   }
   
   .tech-category {
-    font-size: 0.75rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.2 !important;
   }
   
   .tool-category-title,
@@ -5146,15 +5171,116 @@ b.purple {
 }
 
 @media (max-width: 576px) {
+  .tech-icons {
+    padding: 0.5rem 0.2rem !important;
+    margin-bottom: 1.2rem !important;
+  }
+  
+  .tech-item {
+    height: 180px !important;
+    padding: 1.5rem 0.8rem !important;
+    margin: 0 auto !important;
+    max-width: 160px !important;
+    border-radius: 16px !important;
+  }
+  
+  .tech-icon-wrapper {
+    width: 65px !important;
+    height: 65px !important;
+    margin-bottom: 1rem !important;
+    border-radius: 12px !important;
+  }
+  
+  .tech-icon-wrapper svg,
+  .tech-icon-wrapper i {
+    font-size: 3rem !important;
+  }
+  
+  .tech-name {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.4rem !important;
+  }
+  
+  .tech-category {
+    font-size: 0.85rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  .tool-category-title,
+  .tech-category-title {
+    font-size: 1.3rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+/* Extra small devices - optimized for 3 icons per row */
+@media (max-width: 480px) {
+  .tech-icons {
+    padding: 0.4rem 0.15rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .tech-item {
+    height: 170px !important;
+    padding: 1.2rem 0.6rem !important;
+    margin: 0 auto !important;
+    max-width: 140px !important;
+    border-radius: 14px !important;
+  }
+  
+  .tech-icon-wrapper {
+    width: 55px !important;
+    height: 55px !important;
+    margin-bottom: 0.8rem !important;
+    border-radius: 10px !important;
+  }
+  
+  .tech-icon-wrapper svg,
+  .tech-icon-wrapper i {
+    font-size: 2.5rem !important;
+  }
+  
+  .tech-name {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0.3rem !important;
+  }
+  
+  .tech-category {
+    font-size: 0.75rem !important;
+    line-height: 1 !important;
+  }
+  
+  .tool-category-title,
+  .tech-category-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 1.2rem !important;
+  }
+}
+
+/* Ultra small devices - ensure icons are clearly visible */
+@media (max-width: 400px) {
+  .tech-icons {
+    padding: 0.3rem 0.1rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+  
   .tech-item {
     height: 160px !important;
-    padding: 1rem 0.5rem !important;
+    padding: 1rem 0.4rem !important;
+    margin: 0 auto !important;
+    max-width: 130px !important;
+    border-radius: 12px !important;
   }
   
   .tech-icon-wrapper {
     width: 50px !important;
     height: 50px !important;
-    margin-bottom: 0.8rem !important;
+    margin-bottom: 0.7rem !important;
+    border-radius: 8px !important;
   }
   
   .tech-icon-wrapper svg,
@@ -5165,18 +5291,19 @@ b.purple {
   .tech-name {
     font-size: 0.85rem !important;
     font-weight: 600 !important;
-    line-height: 1.2 !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0.2rem !important;
   }
   
   .tech-category {
     font-size: 0.7rem !important;
-    line-height: 1.1 !important;
+    line-height: 1 !important;
   }
   
   .tool-category-title,
   .tech-category-title {
-    font-size: 1.3rem !important;
-    margin-bottom: 1.5rem !important;
+    font-size: 1.1rem !important;
+    margin-bottom: 1rem !important;
   }
 }
 
