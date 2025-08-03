@@ -244,10 +244,10 @@ function Contact() {
                         <a href="https://github.com/Anpatil1" className="social-link" target="_blank" rel="noopener noreferrer">
                           <Github size={24} />
                         </a>
-                        <a href="https://www.linkedin.com/in/avadhut-patil/" className="social-link" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.linkedin.com/in/avadhut-nangare-patil-470901250/" className="social-link" target="_blank" rel="noopener noreferrer">
                           <Linkedin size={24} />
                         </a>
-                        <a href="https://twitter.com/AnpatilAvadhut" className="social-link" target="_blank" rel="noopener noreferrer">
+                        <a href="https://twitter.com/#" className="social-link" target="_blank" rel="noopener noreferrer">
                           <Twitter size={24} />
                         </a>
                       </div>
