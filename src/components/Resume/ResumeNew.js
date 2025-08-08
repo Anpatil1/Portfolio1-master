@@ -9,8 +9,8 @@ import { pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
-// Serve worker and assets from public/pdfjs for same-origin reliability
-pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdfjs/pdf.worker.min.mjs`;
+// Use local worker file for reliable loading
+pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.js`;
 
 function ResumeNew() {
   const [width, setWidth] = useState(window.innerWidth);
@@ -18,7 +18,7 @@ function ResumeNew() {
   const [pageNumber, setPageNumber] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [pdfSource, setPdfSource] = useState("/Avadhut Nangare_Patil_Resume.pdf");
+  const pdfSource = "/Avadhut_Nangare_Patil_Resume.pdf";
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -38,14 +38,6 @@ function ResumeNew() {
     console.error('Worker source:', pdfjs.GlobalWorkerOptions.workerSrc);
     console.error('PDF file path:', pdfSource);
     
-    // Try fallback to public folder if original fails
-    if (pdfSource !== "/Avadhut Nangare_Patil_Resume.pdf") {
-      console.log('Trying fallback PDF source...');
-      setPdfSource("/Avadhut Nangare_Patil_Resume.pdf");
-      setError(null);
-      setLoading(true);
-      return;
-    }
     setError(`Failed to load PDF: ${error.message || 'Unknown error'}. Please try downloading it directly.`);
     setLoading(false);
   };
@@ -77,7 +69,7 @@ function ResumeNew() {
               <motion.div variants={itemVariants}>
                 <Button
                   variant="primary"
-                  href="/Avadhut Nangare_Patil_Resume.pdf"
+                  href="/Avadhut_Nangare_Patil_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="modern-btn pulse-btn"
@@ -106,7 +98,7 @@ function ResumeNew() {
                     <div className="alert alert-warning" role="alert">
                       <h5 style={{ color: 'var(--warning-color)' }}>⚠️ PDF Loading Error</h5>
                       <p style={{ color: 'var(--text-secondary)' }}>{error}</p>
-                      <Button variant="outline-primary" href="/Avadhut Nangare_Patil_Resume.pdf" target="_blank" rel="noopener noreferrer" className="mt-2">
+                      <Button variant="outline-primary" href="/Avadhut_Nangare_Patil_Resume.pdf" target="_blank" rel="noopener noreferrer" className="mt-2">
                         <AiOutlineDownload className="me-2" />
                         Download PDF Directly
                       </Button>
@@ -124,6 +116,7 @@ function ResumeNew() {
                       cMapUrl: `${process.env.PUBLIC_URL}/pdfjs/cmaps/`,
                       cMapPacked: true,
                       standardFontDataUrl: `${process.env.PUBLIC_URL}/pdfjs/standard_fonts/`,
+                      workerSrc: `${process.env.PUBLIC_URL}/pdf.worker.js`
                     }}
                   >
                     <Page
@@ -155,7 +148,7 @@ function ResumeNew() {
           <Row className="justify-content-center mt-4">
             <Col xs="auto">
               <motion.div variants={itemVariants}>
-                <Button variant="outline-primary" href="/Avadhut Nangare_Patil_Resume.pdf" target="_blank" rel="noopener noreferrer" className="modern-btn" style={{ padding: '10px 25px', borderRadius: 'var(--border-radius)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Button variant="outline-primary" href="/Avadhut_Nangare_Patil_Resume.pdf" target="_blank" rel="noopener noreferrer" className="modern-btn" style={{ padding: '10px 25px', borderRadius: 'var(--border-radius)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <AiOutlineDownload size={18} />
                   Download Resume
                 </Button>
