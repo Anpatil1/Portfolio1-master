@@ -18,7 +18,8 @@ import {
   Menu,
   X,
   BookOpen,
-  Mail
+  Mail,
+  Briefcase
 } from "lucide-react";
 
 function NavBar() {
@@ -130,6 +131,13 @@ function NavBar() {
                 <Nav.Link onClick={() => scrollToSection('about')} style={{ cursor: 'pointer' }}>
                   <User size={16} style={{ marginBottom: "2px", marginRight: "5px" }} /> 
                   About
+                </Nav.Link>
+              </Nav.Item>
+
+              <Nav.Item>
+                <Nav.Link onClick={() => scrollToSection('experience')} style={{ cursor: 'pointer' }}>
+                  <Briefcase size={16} style={{ marginBottom: "2px", marginRight: "5px" }} /> 
+                  Experience
                 </Nav.Link>
               </Nav.Item>
 

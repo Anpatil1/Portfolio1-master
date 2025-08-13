@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Col, Row, Modal } from "react-bootstrap";
+import { Col, Row, Modal, Button } from "react-bootstrap";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   DiJavascript1,
   DiReact,
@@ -24,11 +25,31 @@ import {
   SiTailwindcss,
   SiExpress,
   SiRedux,
+  SiTensorflow,
+  SiPytorch,
+  SiPandas,
+  SiNumpy,
+  SiJupyter,
+  SiOpencv,
+  SiScikitlearn,
+  SiKeras,
+  SiAmazonwebservices,
+  SiGooglecloud,
 } from "react-icons/si";
+import { ChevronDown, Eye, EyeOff } from "lucide-react";
 
 function Techstack() {
   const [showModal, setShowModal] = useState(false);
   const [selectedTech, setSelectedTech] = useState(null);
+  const [expandedSections, setExpandedSections] = useState({
+    frontend: true,
+    backend: true,
+    database: true,
+    aiml: true,
+    styling: false,
+    devops: false,
+    cloud: false
+  });
 
   const handleIconClick = (tech) => {
     setSelectedTech(tech);
@@ -38,6 +59,22 @@ function Techstack() {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedTech(null);
+  };
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const toggleAllSections = () => {
+    const allExpanded = Object.values(expandedSections).every(val => val);
+    const newState = Object.keys(expandedSections).reduce((acc, key) => {
+      acc[key] = !allExpanded;
+      return acc;
+    }, {});
+    setExpandedSections(newState);
   };
   const frontendTechnologies = [
     { icon: <DiReact />, name: "React.js", category: "Frontend Framework", color: "#61DAFB", description: "A JavaScript library for building user interfaces" },
@@ -64,6 +101,22 @@ function Techstack() {
     { icon: <SiFirebase />, name: "Firebase", category: "Cloud Database", color: "#FFCA28", description: "Google's mobile and web application platform" },
   ];
 
+  const aimlTechnologies = [
+    { icon: <SiTensorflow />, name: "TensorFlow", category: "ML Framework", color: "#FF6F00", description: "Open-source machine learning framework by Google" },
+    { icon: <SiPytorch />, name: "PyTorch", category: "ML Framework", color: "#EE4C2C", description: "Open-source machine learning library by Facebook" },
+    { icon: <SiScikitlearn />, name: "Scikit-Learn", category: "ML Library", color: "#F7931E", description: "Machine learning library for Python" },
+    { icon: <SiPandas />, name: "Pandas", category: "Data Analysis", color: "#150458", description: "Data manipulation and analysis library" },
+    { icon: <SiNumpy />, name: "NumPy", category: "Scientific Computing", color: "#013243", description: "Library for large, multi-dimensional arrays" },
+    { icon: <SiJupyter />, name: "Jupyter", category: "Development Environment", color: "#F37626", description: "Interactive development environment for data science" },
+    { icon: <SiOpencv />, name: "OpenCV", category: "Computer Vision", color: "#5C3EE8", description: "Computer vision and machine learning library" },
+    { icon: <SiKeras />, name: "Keras", category: "Neural Networks", color: "#D00000", description: "High-level neural networks API" },
+  ];
+
+  const cloudTechnologies = [
+    { icon: <SiAmazonwebservices />, name: "AWS", category: "Cloud Platform", color: "#FF9900", description: "Amazon Web Services cloud platform" },
+    { icon: <SiGooglecloud />, name: "Google Cloud", category: "Cloud Platform", color: "#4285F4", description: "Google Cloud Platform services" },
+  ];
+
   const stylingTechnologies = [
     { icon: <DiBootstrap />, name: "Bootstrap", category: "CSS Framework", color: "#7952B3", description: "Popular CSS framework for responsive design" },
     { icon: <SiTailwindcss />, name: "Tailwind CSS", category: "Utility-First CSS", color: "#06B6D4", description: "Utility-first CSS framework" },
@@ -75,71 +128,182 @@ function Techstack() {
     { icon: <DiGit />, name: "Git", category: "Version Control", color: "#F05032", description: "Distributed version control system" },
   ];
 
-  const renderTechnologySection = (title, technologies, bgGradient, sectionIndex) => (
-    <div className="tech-category-section" style={{ marginBottom: '4rem' }}>
-      <h3 className="tech-category-title" style={{ 
-        color: 'var(--primary-color)', 
-        textAlign: 'center', 
-        marginBottom: '3rem',
-        fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-        fontWeight: '700',
-        textTransform: 'uppercase',
-        letterSpacing: '2px'
-      }}>
-        {title}
-      </h3>
-      <Row style={{ justifyContent: "center", gap: "1rem" }}>
-        {technologies.map((tech, index) => (
-          <Col xs={6} sm={4} md={3} lg={2} className="tech-icons-new" key={index} style={{ marginBottom: '2rem' }}>
-            <div 
-              className="tech-item-new" 
-              style={{ 
-                background: bgGradient,
-                cursor: 'pointer',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                borderRadius: '20px',
-                padding: '2rem 1rem',
-                border: '2px solid transparent',
-                backdropFilter: 'blur(10px)',
-                position: 'relative',
-                overflow: 'hidden'
-              }}
-              onClick={() => handleIconClick(tech)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)';
-                e.currentTarget.style.borderColor = tech.color;
-                e.currentTarget.style.boxShadow = `0 20px 40px rgba(0,0,0,0.1), 0 0 20px ${tech.color}40`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.borderColor = 'transparent';
-                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
-              }}
-            >
-              <div className="tech-icon-wrapper-new" style={{
-                fontSize: 'clamp(3rem, 8vw, 4.5rem)',
-                color: tech.color,
-                textAlign: 'center',
-                marginBottom: '1rem',
-                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
-              }}>
-                {tech.icon}
-              </div>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </div>
+  const renderTechnologySection = (title, technologies, bgGradient, sectionKey, sectionIndex) => (
+    <motion.div 
+      className="tech-category-section" 
+      style={{ marginBottom: '2rem' }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: sectionIndex * 0.1 }}
+    >
+      <div 
+        className="tech-section-header"
+        onClick={() => toggleSection(sectionKey)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1rem 1.5rem',
+          background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%)',
+          borderRadius: '12px',
+          cursor: 'pointer',
+          marginBottom: '1rem',
+          border: `2px solid ${expandedSections[sectionKey] ? 'var(--primary-color)' : 'transparent'}`,
+          transition: 'all 0.3s ease'
+        }}
+      >
+        <h3 style={{ 
+          color: 'var(--primary-color)', 
+          margin: 0,
+          fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
+          fontWeight: '600',
+          textTransform: 'uppercase',
+          letterSpacing: '1px'
+        }}>
+          {title}
+          <span style={{
+            fontSize: '0.8rem',
+            color: 'var(--text-secondary)',
+            marginLeft: '0.5rem',
+            fontWeight: '400'
+          }}>
+            ({technologies.length} technologies)
+          </span>
+        </h3>
+        <motion.div
+          animate={{ rotate: expandedSections[sectionKey] ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ color: 'var(--primary-color)' }}
+        >
+          <ChevronDown size={20} />
+        </motion.div>
+      </div>
+      
+      <AnimatePresence>
+        {expandedSections[sectionKey] && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ overflow: 'hidden' }}
+          >
+            <Row style={{ justifyContent: "center", gap: "0.5rem", margin: 0 }}>
+              {technologies.map((tech, index) => (
+                <Col xs={6} sm={4} md={3} lg={2} className="tech-icons-new" key={index} style={{ marginBottom: '1.5rem', padding: '0.25rem' }}>
+                  <motion.div 
+                    className="tech-item-new" 
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    style={{ 
+                      background: bgGradient,
+                      cursor: 'pointer',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      borderRadius: '16px',
+                      padding: '1.5rem 1rem',
+                      border: '2px solid transparent',
+                      backdropFilter: 'blur(10px)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      height: '120px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                    onClick={() => handleIconClick(tech)}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      y: -5,
+                      borderColor: tech.color,
+                      boxShadow: `0 15px 30px rgba(0,0,0,0.1), 0 0 15px ${tech.color}40`
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="tech-icon-wrapper-new" style={{
+                      fontSize: 'clamp(2rem, 6vw, 3rem)',
+                      color: tech.color,
+                      textAlign: 'center',
+                      marginBottom: '0.5rem',
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+                    }}>
+                      {tech.icon}
+                    </div>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      textAlign: 'center',
+                      lineHeight: '1.2'
+                    }}>
+                      {tech.name}
+                    </div>
+                  </motion.div>
+                </Col>
+              ))}
+            </Row>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 
   return (
     <>
-      <div style={{ paddingBottom: "50px" }}>
-        {renderTechnologySection("Frontend Development", frontendTechnologies, "linear-gradient(135deg, rgba(97, 218, 251, 0.1) 0%, rgba(97, 218, 251, 0.05) 100%)", 0)}
-        {renderTechnologySection("Backend Development", backendTechnologies, "linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)", 1)}
-        {renderTechnologySection("Database Technologies", databaseTechnologies, "linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%)", 2)}
-        {renderTechnologySection("UI/UX & Styling", stylingTechnologies, "linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%)", 3)}
-        {renderTechnologySection("DevOps & Cloud", devOpsTechnologies, "linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%)", 4)}
+      <div style={{ paddingBottom: "30px" }}>
+        {/* Global Toggle Button */}
+        <div style={{ 
+          textAlign: 'center', 
+          marginBottom: '2rem',
+          padding: '1rem',
+          background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%)',
+          borderRadius: '12px',
+          border: '1px solid rgba(79, 70, 229, 0.1)'
+        }}>
+          <h2 style={{
+            color: 'var(--primary-color)',
+            marginBottom: '1rem',
+            fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+            fontWeight: '700'
+          }}>
+            Technical Stack
+          </h2>
+          <Button
+            variant="outline-primary"
+            onClick={toggleAllSections}
+            style={{
+              borderRadius: '25px',
+              padding: '0.5rem 1.5rem',
+              fontWeight: '600',
+              fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              margin: '0 auto'
+            }}
+          >
+            {Object.values(expandedSections).every(val => val) ? (
+              <>
+                <EyeOff size={16} />
+                Collapse All
+              </>
+            ) : (
+              <>
+                <Eye size={16} />
+                Expand All
+              </>
+            )}
+          </Button>
+        </div>
+
+        {renderTechnologySection("Frontend Development", frontendTechnologies, "linear-gradient(135deg, rgba(97, 218, 251, 0.1) 0%, rgba(97, 218, 251, 0.05) 100%)", "frontend", 0)}
+        {renderTechnologySection("Backend Development", backendTechnologies, "linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)", "backend", 1)}
+        {renderTechnologySection("Database Technologies", databaseTechnologies, "linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%)", "database", 2)}
+        {renderTechnologySection("AI & Machine Learning", aimlTechnologies, "linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%)", "aiml", 3)}
+        {renderTechnologySection("UI/UX & Styling", stylingTechnologies, "linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%)", "styling", 4)}
+        {renderTechnologySection("DevOps & Tools", devOpsTechnologies, "linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%)", "devops", 5)}
+        {renderTechnologySection("Cloud Platforms", cloudTechnologies, "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)", "cloud", 6)}
       </div>
       
       <Modal show={showModal} onHide={handleCloseModal} centered size="lg">

@@ -4,22 +4,25 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import myImg from "../../Assets/avatar.svg";
-import Tilt from "react-parallax-tilt";
-import { AiFillGithub } from "react-icons/ai";
-import { HiMail, HiSparkles } from "react-icons/hi";
-import { FaCode, FaRocket, FaDownload, FaStar, FaLightbulb } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { 
+  Code2, 
+  Database, 
+  ArrowRight, 
+  Download, 
+  Mail, 
+  Github, 
+  Linkedin,
+  Briefcase,
+  Award
+} from "lucide-react";
+import Type from "./Type";
 
 function Home() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    setIsVisible(true);
   }, []);
 
   const containerVariants = {
@@ -27,261 +30,128 @@ function Home() {
     visible: {
       opacity: 1,
       transition: {
-        delayChildren: 0.2,
-        staggerChildren: 0.15
+        delayChildren: 0.3,
+        staggerChildren: 0.2
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 50, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.6,
-        ease: "easeOut"
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94]
       }
     }
   };
 
-  const floatVariants = {
-    animate: {
-      y: [-10, 10, -10],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
+  const heroStats = [
+    { label: "Years Experience", value: "1+", icon: <Briefcase size={14} /> },
+    { label: "Projects Completed", value: "5+", icon: <Code2 size={14} /> },
+    { label: "Technologies", value: "10+", icon: <Database size={14} /> },
+    { label: "Client Satisfaction", value: "100%", icon: <Award size={14} /> }
+  ];
 
   return (
-    <section>
-      <Container fluid className="home-section-modern" id="home">
-        {/* Enhanced Animated Background Elements */}
-        <div className="home-bg-elements">
-          <div className="floating-shape shape-1"></div>
-          <div className="floating-shape shape-2"></div>
-          <div className="floating-shape shape-3"></div>
-          <div className="gradient-orb orb-1"></div>
-          <div className="gradient-orb orb-2"></div>
-          
-          {/* Interactive Mouse Follower */}
-          <motion.div
-            className="mouse-follower"
-            animate={{
-              x: mousePosition.x - 100,
-              y: mousePosition.y - 100,
-            }}
-            transition={{ type: "spring", damping: 30, stiffness: 200 }}
-            style={{
-              position: 'fixed',
-              width: '200px',
-              height: '200px',
-              background: 'radial-gradient(circle, rgba(79, 70, 229, 0.1), transparent)',
-              borderRadius: '50%',
-              pointerEvents: 'none',
-              zIndex: 1,
-              filter: 'blur(20px)'
-            }}
-          />
+    <section className="hero-section">
+      <Container fluid className="hero-container">
+        {/* Professional Background Grid */}
+        <div className="hero-bg">
+          <div className="bg-grid"></div>
+          <div className="bg-gradient"></div>
         </div>
-        
-        <Container className="home-content-modern">
+
+        <Container>
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            animate="visible"
+            animate={isVisible ? "visible" : "hidden"}
+            className="hero-content"
           >
             <Row className="align-items-center min-vh-100">
-              <Col lg={7} className="home-header-modern">
-                <motion.div variants={itemVariants} className="greeting-section">
-                  <motion.span 
-                    className="greeting-badge"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <FaCode className="me-2" />
-                    <HiSparkles className="me-1" />
-                    Hello World!
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      style={{ marginLeft: '8px' }}
-                    >
-                      <FaStar size={12} />
-                    </motion.div>
-                  </motion.span>
-                  
-                  <motion.h1 
-                    className="main-heading"
-                    variants={itemVariants}
-                  >
-                    Hi, I'm{" "}
-                    <motion.span 
-                      className="name-highlight"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      Avadhut Nangare Patil
-                      <motion.span 
-                        className="wave" 
-                        role="img" 
-                        aria-labelledby="wave"
-                        animate={{ rotate: [0, 20, -10, 20, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-                        style={{ display: 'inline-block', marginLeft: '10px' }}
-                      >
-                        👋🏻
-                      </motion.span>
-                    </motion.span>
-                  </motion.h1>
-                </motion.div>
-                
-                <motion.div variants={itemVariants} className="role-section">
-                  <div className="role-container">
-                    <motion.span 
-                      className="role-label"
-                      variants={floatVariants}
-                      animate="animate"
-                    >
-                      <FaLightbulb className="me-2" />
-                      I am a
-                    </motion.span>
-                    <h2 className="role-title">
-                      <motion.span 
-                        className="typing-text"
-                        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                      >
-                        Full Stack Developer
-                      </motion.span>
-                      <motion.span 
-                        className="cursor-blink"
-                        animate={{ opacity: [1, 0, 1] }}
-                        transition={{ duration: 1, repeat: Infinity }}
-                      >
-                        |
-                      </motion.span>
-                    </h2>
+              {/* Main Content */}
+              <Col lg={8} xl={7}>
+                <motion.div variants={itemVariants} className="hero-text">
+                  <div className="hero-badge">
+                    <span className="badge-text">Available for Full-Time Opportunities</span>
+                    <div className="badge-indicator"></div>
                   </div>
-                </motion.div>
-                
-                <motion.div variants={itemVariants} className="description-section">
-                  <p className="main-description">
-                    Crafting <motion.span 
-                      className="highlight"
-                      whileHover={{ scale: 1.05, color: "#a78bfa" }}
-                    >
-                      innovative digital experiences
-                    </motion.span> with cutting-edge technologies.
-                    Specialized in <span className="tech-highlight">Java</span>, <span className="tech-highlight">Spring Boot</span>, 
-                    and <span className="tech-highlight">React.js</span> to build scalable, performant, and user-centric applications.
+                  
+                  <h1 className="hero-title">
+                    Hi, I'm <span className="name-highlight">Avadhut Nangare Patil</span>
+                  </h1>
+                  
+                  <div className="hero-subtitle">
+                    <span className="role-text">Full Stack Java Developer</span>
+                    <Type />
+                  </div>
+                  
+                  <p className="hero-description">
+                    Passionate software developer with expertise in <strong>Java Spring Boot</strong> and 
+                    <strong> React.js</strong>. Currently contributing as an intern at a tech company in Pune 
+                    while building innovative solutions for clients worldwide.
                   </p>
-                </motion.div>
 
-                <motion.div variants={itemVariants} className="cta-section">
-                  <div className="button-group">
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button 
-                        className="primary-cta"
-                        href="https://github.com/Anpatil1"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <AiFillGithub className="btn-icon" />
-                        <span>Explore My Work</span>
-                        <FaRocket className="btn-arrow" />
-                      </Button>
-                    </motion.div>
+                  <div className="hero-actions">
+                    <Button 
+                      className="primary-action"
+                      href="#contact"
+                    >
+                      <Mail size={14} />
+                      <span>Let's Connect</span>
+                      <ArrowRight size={12} />
+                    </Button>
                     
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button 
-                        className="secondary-cta"
-                        href="#contact"
-                      >
-                        <HiMail className="btn-icon" />
-                        <span>Let's Connect</span>
-                      </Button>
-                    </motion.div>
-                    
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button 
-                        className="download-cta"
-                        href="/Avadhut Nangare_Patil_Resume.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaDownload className="btn-icon" />
-                        <span>Resume</span>
-                      </Button>
-                    </motion.div>
+                    <Button 
+                      variant="outline" 
+                      className="secondary-action"
+                      href="/Avadhut_Nangare_Patil_Resume.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Download size={14} />
+                      <span>Download CV</span>
+                    </Button>
+                  </div>
+
+                  <div className="social-links">
+                    <a href="https://github.com/Anpatil1" className="social-link" target="_blank" rel="noopener noreferrer">
+                      <Github size={16} />
+                    </a>
+                    <a href="https://www.linkedin.com/in/avadhut-nangare-patil-470901250/" className="social-link" target="_blank" rel="noopener noreferrer">
+                      <Linkedin size={16} />
+                    </a>
                   </div>
                 </motion.div>
               </Col>
-              
-              <Col lg={5} className="avatar-section-modern">
-                <motion.div 
-                  variants={itemVariants}
-                  className="avatar-container"
-                >
-                  <div className="avatar-glow"></div>
-                  <Tilt
-                    tiltMaxAngleX={15}
-                    tiltMaxAngleY={15}
-                    perspective={1000}
-                    transitionSpeed={1500}
-                    scale={1.05}
-                    gyroscope={true}
-                  >
-                    <motion.div 
-                      className="avatar-frame"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <img 
-                        src={myImg} 
-                        className="avatar-image" 
-                        alt="Avadhut Nangare Patil"
-                      />
-                    </motion.div>
-                  </Tilt>
-                  <div className="floating-icons">
-                    <motion.div 
-                      className="tech-icon icon-1"
-                      variants={floatVariants}
-                      animate="animate"
-                      whileHover={{ scale: 1.2, rotate: 360 }}
-                    >
-                      ⚛️
-                    </motion.div>
-                    <motion.div 
-                      className="tech-icon icon-2"
-                      variants={floatVariants}
-                      animate="animate"
-                      whileHover={{ scale: 1.2, rotate: 360 }}
-                      transition={{ delay: 1 }}
-                    >
-                      ☕
-                    </motion.div>
-                    <motion.div 
-                      className="tech-icon icon-3"
-                      variants={floatVariants}
-                      animate="animate"
-                      whileHover={{ scale: 1.2, rotate: 360 }}
-                      transition={{ delay: 2 }}
-                    >
-                      🚀
-                    </motion.div>
-                    <motion.div 
-                      className="tech-icon icon-4"
-                      variants={floatVariants}
-                      animate="animate"
-                      whileHover={{ scale: 1.2, rotate: 360 }}
-                      transition={{ delay: 3 }}
-                    >
-                      💻
-                    </motion.div>
+
+              {/* Professional Avatar & Stats */}
+              <Col lg={4} xl={5}>
+                <motion.div variants={itemVariants} className="hero-visual">
+                  <div className="avatar-container">
+                    <div className="avatar-frame">
+                      <img src={myImg} alt="Avadhut Nangare Patil" className="profile-image" />
+                    </div>
+                  </div>
+
+                  <div className="hero-stats">
+                    {heroStats.map((stat, index) => (
+                      <motion.div
+                        key={index}
+                        variants={itemVariants}
+                        transition={{ delay: 0.5 + index * 0.1 }}
+                        className="stat-card"
+                      >
+                        <div className="stat-icon">{stat.icon}</div>
+                        <div className="stat-content">
+                          <h3 className="stat-value">{stat.value}</h3>
+                          <p className="stat-label">{stat.label}</p>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 </motion.div>
               </Col>

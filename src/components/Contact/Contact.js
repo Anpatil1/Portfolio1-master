@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
@@ -27,10 +27,24 @@ function Contact() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // EmailJS configuration - You need to replace these with your actual values
-  const serviceId = "service_8ltmdpp";
-  const templateId = "template_p0xqvvj";
-  const publicKey = "PlY7j-XFgLsXOhjMN";
+  // EmailJS configuration - Use environment variables for security and flexibility
+  const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+  const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+  const emailConfigOk = Boolean(serviceId && templateId && publicKey);
+
+  // Initialize EmailJS with your public key (only once)
+  useEffect(() => {
+    if (publicKey) {
+      try {
+        emailjs.init(publicKey);
+      } catch (e) {
+        console.error('EmailJS init failed:', e);
+      }
+    } else {
+      console.warn('EmailJS public key is missing. Check your .env.local');
+    }
+  }, [publicKey]);
 
   const handleChange = (e) => {
     setFormData({
@@ -44,6 +58,9 @@ function Contact() {
     setIsSubmitting(true);
 
     try {
+      if (!emailConfigOk) {
+        throw new Error('Email service is not configured. Missing Service ID, Template ID, or Public Key');
+      }
       // Prepare template parameters for EmailJS
       const templateParams = {
         from_name: formData.name,
@@ -54,12 +71,11 @@ function Contact() {
         reply_to: formData.email
       };
 
-      // Send email using EmailJS
+      // Send email using EmailJS (publicKey is already initialized)
       const response = await emailjs.send(
         serviceId,
         templateId,
-        templateParams,
-        publicKey
+        templateParams
       );
 
       if (response.status === 200) {
@@ -69,8 +85,15 @@ function Contact() {
         throw new Error('Failed to send message');
       }
     } catch (error) {
-      console.error('EmailJS Error:', error);
-      toast.error("❌ Failed to send message. Please try again or contact me directly at nangareavadhut@gmail.com");
+      // EmailJSResponseStatus exposes 'status' & 'text' fields
+      const status = error?.status;
+      const detail = error?.text || error?.message || 'Unknown error';
+      console.error('EmailJS Error:', { status, detail, error });
+      if (!emailConfigOk) {
+        toast.error('Email is temporarily unavailable. Please try again later or email me at nangareavadhut@gmail.com');
+      } else {
+        toast.error(`❌ Failed to send message (${status || 'n/a'}). ${detail}`);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -105,7 +128,7 @@ function Contact() {
   return (
     <Container fluid className="contact-section" style={{ padding: '0 15px' }}>
       <Helmet>
-        <title>Contact | Portfolio</title>
+        <title>Avadhut | Portfolio</title>
         <meta name="description" content="Get in touch with me for collaborations, opportunities, or just to say hello!" />
       </Helmet>
       
@@ -217,7 +240,7 @@ function Contact() {
                       </Form.Group>
                       <Button 
                         type="submit" 
-                        disabled={!validateForm() || isSubmitting}
+                        disabled={!validateForm() || isSubmitting || !emailConfigOk}
                         className="modern-btn pulse-btn"
                         size="lg"
                         style={{ 
@@ -242,10 +265,15 @@ function Contact() {
                         ) : (
                           <>
                             <Send size={20} className="me-2" />
-                            Send Message
+                            {emailConfigOk ? 'Send Message' : 'Email Unavailable'}
                           </>
                         )}
                       </Button>
+                      {!emailConfigOk && (
+                        <p className="mt-2 mb-0" style={{ color: 'var(--warning-color)', fontSize: '0.9rem' }}>
+                          Email service not configured. Please set REACT_APP_EMAILJS_* in .env.local and restart.
+                        </p>
+                      )}
                     </Form>
                   </Card.Body>
                 </Card>

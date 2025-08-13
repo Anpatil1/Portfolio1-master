@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Col, Row, Modal } from "react-bootstrap";
+import { Col, Row, Modal, Button } from "react-bootstrap";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   SiPostman,
   SiGithub,
@@ -18,6 +19,10 @@ import {
   SiUbuntu,
   SiAmazonwebservices,
   SiRender,
+  SiAnaconda,
+  SiGooglecolab,
+  SiKaggle,
+  SiTableau,
 } from "react-icons/si";
 import { 
   Code, 
@@ -28,12 +33,30 @@ import {
   Palette,
   Package,
   GitBranch,
-  Zap
+  Zap,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  Brain,
+  BarChart3
 } from "lucide-react";
 
 function Toolstack() {
   const [showModal, setShowModal] = useState(false);
   const [selectedTool, setSelectedTool] = useState(null);
+  const [expandedSections, setExpandedSections] = useState({
+    development: true,
+    apiTesting: true,
+    versionControl: true,
+    deployment: true,
+    aimlTools: true,
+    dataAnalytics: false,
+    design: false,
+    projectMgmt: false,
+    packageMgmt: false,
+    os: false,
+    terminal: false
+  });
 
   const handleIconClick = (tool) => {
     setSelectedTool(tool);
@@ -43,6 +66,22 @@ function Toolstack() {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedTool(null);
+  };
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const toggleAllSections = () => {
+    const allExpanded = Object.values(expandedSections).every(val => val);
+    const newState = Object.keys(expandedSections).reduce((acc, key) => {
+      acc[key] = !allExpanded;
+      return acc;
+    }, {});
+    setExpandedSections(newState);
   };
 
   const developmentTools = [
@@ -73,6 +112,19 @@ function Toolstack() {
     { icon: <SiDocker />, name: "Docker", category: "Containerization", color: "#2496ED", description: "Platform for developing, shipping, and running applications" },
     { icon: <Cloud />, name: "Azure", category: "Cloud Platform", color: "#0078D4", description: "Microsoft's cloud computing service" },
     { icon: <Cloud />, name: "Google Cloud", category: "Cloud Platform", color: "#4285F4", description: "Google's cloud computing services" },
+  ];
+
+  const aimlTools = [
+    { icon: <SiAnaconda />, name: "Anaconda", category: "Data Science Platform", color: "#44A833", description: "Distribution platform for Python and R programming" },
+    { icon: <SiGooglecolab />, name: "Google Colab", category: "Cloud Notebook", color: "#F9AB00", description: "Cloud-based Jupyter notebook environment" },
+    { icon: <SiKaggle />, name: "Kaggle", category: "Data Science Platform", color: "#20BEFF", description: "Platform for data science competitions and datasets" },
+    { icon: <Brain />, name: "Jupyter Lab", category: "Development Environment", color: "#F37626", description: "Next-generation web-based interface for Project Jupyter" },
+  ];
+
+  const dataAnalyticsTools = [
+        { icon: <SiTableau />, name: "Tableau", category: "Data Visualization", color: "#E97627", description: "Powerful data visualization and business intelligence" },
+    { icon: <BarChart3 />, name: "Excel", category: "Spreadsheet", color: "#217346", description: "Microsoft spreadsheet application" },
+    { icon: <BarChart3 />, name: "Google Sheets", category: "Cloud Spreadsheet", color: "#34A853", description: "Web-based spreadsheet application" },
   ];
 
   const designTools = [
@@ -110,75 +162,188 @@ function Toolstack() {
     { icon: <Terminal />, name: "Zsh", category: "Shell", color: "#F15A24", description: "Extended Bourne shell with improvements" },
   ];
 
-  const renderToolSection = (title, tools, bgGradient, sectionIndex) => (
-    <div className="tool-category-section" style={{ marginBottom: '4rem' }}>
-      <h3 className="tool-category-title" style={{ 
-        color: 'var(--secondary-color)', 
-        textAlign: 'center', 
-        marginBottom: '3rem',
-        fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-        fontWeight: '700',
-        textTransform: 'uppercase',
-        letterSpacing: '2px'
-      }}>
-        {title}
-      </h3>
-      <Row style={{ justifyContent: "center", gap: "1rem" }}>
-        {tools.map((tool, index) => (
-          <Col xs={6} sm={4} md={3} lg={2} className="tool-icons-new" key={index} style={{ marginBottom: '2rem' }}>
-            <div 
-              className="tool-item-new" 
-              style={{ 
-                background: bgGradient,
-                cursor: 'pointer',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                borderRadius: '20px',
-                padding: '2rem 1rem',
-                border: '2px solid transparent',
-                backdropFilter: 'blur(10px)',
-                position: 'relative',
-                overflow: 'hidden'
-              }}
-              onClick={() => handleIconClick(tool)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)';
-                e.currentTarget.style.borderColor = tool.color;
-                e.currentTarget.style.boxShadow = `0 20px 40px rgba(0,0,0,0.1), 0 0 20px ${tool.color}40`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.borderColor = 'transparent';
-                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
-              }}
-            >
-              <div className="tool-icon-wrapper-new" style={{
-                fontSize: 'clamp(3rem, 8vw, 4.5rem)',
-                color: tool.color,
-                textAlign: 'center',
-                marginBottom: '1rem',
-                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
-              }}>
-                {tool.icon}
-              </div>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </div>
+  const renderToolSection = (title, tools, bgGradient, sectionKey, sectionIndex) => (
+    <motion.div 
+      className="tool-category-section" 
+      style={{ marginBottom: '2rem' }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: sectionIndex * 0.1 }}
+    >
+      <div 
+        className="tool-section-header"
+        onClick={() => toggleSection(sectionKey)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1rem 1.5rem',
+          background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)',
+          borderRadius: '12px',
+          cursor: 'pointer',
+          marginBottom: '1rem',
+          border: `2px solid ${expandedSections[sectionKey] ? 'var(--secondary-color)' : 'transparent'}`,
+          transition: 'all 0.3s ease'
+        }}
+      >
+        <h3 style={{ 
+          color: 'var(--secondary-color)', 
+          margin: 0,
+          fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
+          fontWeight: '600',
+          textTransform: 'uppercase',
+          letterSpacing: '1px'
+        }}>
+          {title}
+          <span style={{
+            fontSize: '0.8rem',
+            color: 'var(--text-secondary)',
+            marginLeft: '0.5rem',
+            fontWeight: '400'
+          }}>
+            ({tools.length} tools)
+          </span>
+        </h3>
+        <motion.div
+          animate={{ rotate: expandedSections[sectionKey] ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ color: 'var(--secondary-color)' }}
+        >
+          <ChevronDown size={20} />
+        </motion.div>
+      </div>
+      
+      <AnimatePresence>
+        {expandedSections[sectionKey] && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ overflow: 'hidden' }}
+          >
+            <Row style={{ justifyContent: "center", gap: "0.5rem", margin: 0 }}>
+              {tools.map((tool, index) => (
+                <Col xs={6} sm={4} md={3} lg={2} className="tool-icons-new" key={index} style={{ marginBottom: '1.5rem', padding: '0.25rem' }}>
+                  <motion.div 
+                    className="tool-item-new" 
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    style={{ 
+                      background: bgGradient,
+                      cursor: 'pointer',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      borderRadius: '16px',
+                      padding: '1.5rem 1rem',
+                      border: '2px solid transparent',
+                      backdropFilter: 'blur(10px)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      height: '120px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                    onClick={() => handleIconClick(tool)}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      y: -5,
+                      borderColor: tool.color,
+                      boxShadow: `0 15px 30px rgba(0,0,0,0.1), 0 0 15px ${tool.color}40`
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="tool-icon-wrapper-new" style={{
+                      fontSize: 'clamp(2rem, 6vw, 3rem)',
+                      color: tool.color,
+                      textAlign: 'center',
+                      marginBottom: '0.5rem',
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+                    }}>
+                      {tool.icon}
+                    </div>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      textAlign: 'center',
+                      lineHeight: '1.2'
+                    }}>
+                      {tool.name}
+                    </div>
+                  </motion.div>
+                </Col>
+              ))}
+            </Row>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 
   return (
     <>
-      <div style={{ paddingBottom: "50px" }}>
-        {renderToolSection("Development Environment", developmentTools, "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)", 0)}
-        {renderToolSection("API Testing & Development", apiTestingTools, "linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)", 1)}
-        {renderToolSection("Version Control & Git", versionControlTools, "linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%)", 2)}
-        {renderToolSection("Deployment & Cloud", deploymentTools, "linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%)", 3)}
-        {renderToolSection("Design & Prototyping", designTools, "linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%)", 4)}
-        {renderToolSection("Project Management", projectManagementTools, "linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%)", 5)}
-        {renderToolSection("Package Managers & Build Tools", packageManagers, "linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%)", 6)}
-        {renderToolSection("Operating Systems", operatingSystemsTools, "linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%)", 7)}
-        {renderToolSection("Terminal & Command Line", terminalTools, "linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%)", 8)}
+      <div style={{ paddingBottom: "30px" }}>
+        {/* Global Toggle Button */}
+        <div style={{ 
+          textAlign: 'center', 
+          marginBottom: '2rem',
+          padding: '1rem',
+          background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)',
+          borderRadius: '12px',
+          border: '1px solid rgba(124, 58, 237, 0.1)'
+        }}>
+          <h2 style={{
+            color: 'var(--secondary-color)',
+            marginBottom: '1rem',
+            fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+            fontWeight: '700'
+          }}>
+            Professional Tools & Platforms
+          </h2>
+          <Button
+            variant="outline-secondary"
+            onClick={toggleAllSections}
+            style={{
+              borderRadius: '25px',
+              padding: '0.5rem 1.5rem',
+              fontWeight: '600',
+              fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              margin: '0 auto',
+              borderColor: 'var(--secondary-color)',
+              color: 'var(--secondary-color)'
+            }}
+          >
+            {Object.values(expandedSections).every(val => val) ? (
+              <>
+                <EyeOff size={16} />
+                Collapse All
+              </>
+            ) : (
+              <>
+                <Eye size={16} />
+                Expand All
+              </>
+            )}
+          </Button>
+        </div>
+
+        {renderToolSection("Development Environment", developmentTools, "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)", "development", 0)}
+        {renderToolSection("API Testing & Development", apiTestingTools, "linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)", "apiTesting", 1)}
+        {renderToolSection("Version Control & Git", versionControlTools, "linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%)", "versionControl", 2)}
+        {renderToolSection("Deployment & Cloud", deploymentTools, "linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%)", "deployment", 3)}
+        {renderToolSection("AI/ML & Data Science Tools", aimlTools, "linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%)", "aimlTools", 4)}
+        {renderToolSection("Data Analytics & Visualization", dataAnalyticsTools, "linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(20, 184, 166, 0.05) 100%)", "dataAnalytics", 5)}
+        {renderToolSection("Design & Prototyping", designTools, "linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%)", "design", 6)}
+        {renderToolSection("Project Management", projectManagementTools, "linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%)", "projectMgmt", 7)}
+        {renderToolSection("Package Managers & Build Tools", packageManagers, "linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%)", "packageMgmt", 8)}
+        {renderToolSection("Operating Systems", operatingSystemsTools, "linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%)", "os", 9)}
+        {renderToolSection("Terminal & Command Line", terminalTools, "linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%)", "terminal", 10)}
       </div>
       
       <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
