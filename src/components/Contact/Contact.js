@@ -28,9 +28,17 @@ function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // EmailJS configuration - Use environment variables for security and flexibility
-  const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
-  const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
-  const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+  const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_8ltmdpp';
+  const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_p0xqvvj';
+  const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'PlY7j-XFgLsXOhjMN';
+  
+  // Debug logging (remove in production)
+  console.log('EmailJS Environment Variables:', {
+    serviceId: serviceId ? 'Set' : 'Missing',
+    templateId: templateId ? 'Set' : 'Missing', 
+    publicKey: publicKey ? 'Set' : 'Missing'
+  });
+  
   const emailConfigOk = Boolean(serviceId && templateId && publicKey);
 
   // Initialize EmailJS with your public key (only once)
