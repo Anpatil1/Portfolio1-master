@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -179,6 +179,34 @@ function Blog() {
     }
   };
 
+  // Fix navbar interaction on blog page
+  useEffect(() => {
+    // Force navbar to be interactive when blog page loads
+    const fixNavbar = () => {
+      const navbar = document.querySelector('.navbar');
+      const navLinks = document.querySelectorAll('.navbar .nav-link');
+      
+      if (navbar) {
+        navbar.style.zIndex = '999999';
+        navbar.style.pointerEvents = 'all';
+        navbar.style.position = 'fixed';
+      }
+      
+      navLinks.forEach(link => {
+        link.style.pointerEvents = 'all';
+        link.style.cursor = 'pointer';
+        link.style.zIndex = '999999';
+        link.style.position = 'relative';
+      });
+    };
+
+    // Run immediately and after a short delay
+    fixNavbar();
+    const timer = setTimeout(fixNavbar, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   const getCategoryIcon = (category) => {
     switch (category) {
       case "Artificial Intelligence":
@@ -193,12 +221,13 @@ function Blog() {
   };
 
   return (
-    <Container fluid className="blog-section">
+    <Container fluid className="blog-section" style={{ position: 'relative', zIndex: 1 }}>
       <Particle />
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        style={{ position: 'relative', zIndex: 2 }}
       >
         <Container>
           <Row>

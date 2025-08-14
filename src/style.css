@@ -152,17 +152,8 @@ h3 {
   overflow-x: hidden !important;
   padding-left: 15px !important;
   padding-right: 15px !important;
-}
-
-/* Hero section specific fixes */
-.hero-section {
-  max-width: 100vw !important;
-  overflow-x: hidden !important;
-}
-
-.hero-content {
-  max-width: 100% !important;
-  padding: 1rem !important;
+  color: var(--text-primary) !important;
+  transition: color 0.3s ease-in-out;
 }
 
 /* Prevent text overflow */
@@ -191,13 +182,9 @@ h3 {
     line-height: 1.3 !important;
   }
   
-  .container, .container-fluid {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-  }
-  
   .hero-content {
-    padding: 0.5rem !important;
+    padding: 5px 0 !important; /* Consistent with hero section fixes - minimal gap */
+    margin-top: 0 !important; /* No margin on mobile */
   }
 }
 
@@ -576,49 +563,6 @@ h3 {
   color: var(--primary-color);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .animated-hero-banner {
-    padding-top: 60px;
-  }
-  
-  .tech-orbit {
-    width: 200px;
-    height: 200px;
-  }
-  
-  .tech-item {
-    width: 40px;
-    height: 40px;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-100px) rotate(calc(-1 * var(--angle)));
-  }
-  
-  .tech-icon {
-    font-size: 1rem;
-  }
-  
-  .tech-name {
-    font-size: 0.6rem;
-  }
-  
-  .skill-showcase {
-    padding: 1rem;
-    margin: 0 1rem 2rem;
-  }
-  
-  .code-preview {
-    margin: 0 1rem 2rem;
-  }
-  
-  .innovation-title {
-    margin-bottom: 2rem;
-  }
-  
-  .innovation-subtitle {
-    margin-bottom: 2rem;
-  }
-}
-
 @media (max-width: 480px) {
   .hero-content-wrapper {
     padding: 0 1rem;
@@ -849,8 +793,8 @@ button:focus {
   transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
-/* Root level text color enforcement */
-.container, .container-fluid, .row, .col {
+/* Row and column inheritance */
+.row, .col {
   color: var(--text-primary) !important;
   transition: color 0.3s ease-in-out;
 }
@@ -914,11 +858,6 @@ button:focus {
   animation-delay: -1s;
 }
 
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); } /* Stop rotation */
-}
-
 .loader-text {
   font-family: "Raleway", sans-serif;
   font-size: 1.2rem;
@@ -940,14 +879,78 @@ button:focus {
 /* Navbar Styles with Improved Light Mode */
 .navbar {
   background-color: rgba(15, 23, 42, 0.95) !important;
-  padding: 0.3rem 1rem !important; /* Further reduced for smaller navbar */
-  font-size: 0.9rem !important; /* Reduced font size */
+  padding: 0.2rem 1rem !important; /* Further reduced for even smaller navbar */
+  font-size: 0.85rem !important; /* Further reduced font size */
   position: fixed !important;
   top: 0 !important;
-  z-index: 999 !important;
+  z-index: 999999 !important; /* Maximum z-index to ensure navbar is always on top */
   transition: all 0.3s ease !important;
   border-bottom: 1px solid rgba(99, 102, 241, 0.2);
   backdrop-filter: blur(20px);
+  width: 100% !important;
+  pointer-events: all !important; /* Ensure navbar is always interactive */
+  min-height: 45px !important; /* Set a smaller minimum height */
+}
+
+/* Ensure all navbar children are also interactive */
+.navbar * {
+  pointer-events: all !important;
+  z-index: inherit !important;
+}
+
+/* Critical fix for blog page navigation */
+.navbar .navbar-nav .nav-item .nav-link {
+  pointer-events: all !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 999999 !important;
+  user-select: none !important;
+}
+
+/* Override any motion/framer interference */
+.navbar .nav-link:hover,
+.navbar .nav-link:focus,
+.navbar .nav-link:active {
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+
+/* Ensure Bootstrap nav components work */
+.navbar-nav .nav-link[data-rr-ui-event-key] {
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+
+/* ULTIMATE BLOG PAGE FIX */
+.blog-section .navbar,
+.blog-section .navbar *,
+.blog-section ~ * .navbar,
+.blog-section ~ * .navbar * {
+  pointer-events: all !important;
+  z-index: 999999 !important;
+  position: relative !important;
+}
+
+/* Force navbar visibility on blog pages */
+.navbar-nav .nav-link {
+  position: relative !important;
+  z-index: 1000000 !important;
+  pointer-events: all !important;
+  cursor: pointer !important;
+  display: flex !important;
+}
+
+/* Prevent any overlay from blocking navbar */
+.blog-section::before,
+.blog-section::after {
+  display: none !important;
+}
+
+/* Remove any pseudo-elements that might block navbar */
+.blog-section *::before,
+.blog-section *::after {
+  z-index: auto !important;
+  pointer-events: none !important;
 }
 
 .navbar.sticky {
@@ -1141,14 +1144,18 @@ button:focus {
 .navbar-nav .nav-link {
   color: var(--text-primary) !important;
   font-weight: 500;
-  margin: 0 0.3rem; /* Reduced from 0.5rem */
-  padding: 0.4rem 0.6rem !important; /* Reduced from 0.75rem 1rem */
+  margin: 0 0.2rem; /* Further reduced from 0.3rem */
+  padding: 0.3rem 0.5rem !important; /* Further reduced for compact navbar */
   border-radius: var(--border-radius);
   transition: var(--transition);
   display: flex;
   align-items: center;
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem; /* Added smaller font size */
+  font-size: 0.8rem; /* Further reduced from 0.85rem */
+  pointer-events: all !important; /* Ensure links are always clickable */
+  cursor: pointer !important;
+  position: relative;
+  z-index: 10000 !important; /* Ensure nav links are above everything */
 }
 
 [data-theme="light"] .navbar-nav .nav-link {
@@ -1475,12 +1482,6 @@ button:focus {
   background: linear-gradient(-45deg, #4f46e5, #7c3aed, #06b6d4, #10b981);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
-}
-
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 /* Floating Animation */
@@ -1818,12 +1819,6 @@ button:focus {
 /* ==================================
    COMPREHENSIVE RESPONSIVE DESIGN
    ================================== */
-
-/* Base responsive containers */
-.container {
-  padding-left: 15px !important;
-  padding-right: 15px !important;
-}
 
 /* Extra Small Devices (Portrait Phones, less than 576px) */
 @media (max-width: 575.98px) {
@@ -2357,13 +2352,6 @@ button:focus {
   backdrop-filter: blur(15px) !important;
 }
 
-.navbar {
-  position: fixed !important;
-  transition: all 0.3s ease-out 0s !important;
-  padding: 0.2rem 0.8rem !important; /* Further reduced padding */
-  font-size: 0.85rem !important; /* Further reduced font size */
-}
-
 .navbar-toggler {
   position: relative !important;
   background-color: transparent !important;
@@ -2539,6 +2527,8 @@ button:focus {
   background-size: cover !important;
   width: 100%;
   height: 100%;
+  z-index: -1 !important; /* Ensure particles stay behind everything */
+  pointer-events: none !important; /* Prevent particles from blocking clicks */
 }
 
 .home-header {
@@ -2584,14 +2574,16 @@ button:focus {
 
 .Typewriter__wrapper {
   font-size: 2.2em !important;
-  color: var(--primary-color) !important;
+  color: rgb(79, 70, 229) !important; /* RGB color for primary */
   font-weight: 600 !important;
   font-family: 'Inter', sans-serif !important;
+  line-height: 1.2 !important;
+  display: inline-block !important;
 }
 
 .Typewriter__cursor {
   font-size: 2.4em !important;
-  color: var(--primary-color) !important;
+  color: rgb(124, 58, 237) !important; /* RGB color for secondary */
   opacity: 0.8;
   animation: gentleBlink 1.5s infinite ease-in-out;
 }
@@ -2602,21 +2594,28 @@ button:focus {
 }
 
 [data-theme="light"] .Typewriter__wrapper {
-  color: var(--primary-color) !important;
+  color: rgb(79, 70, 229) !important; /* RGB color for light theme */
 }
 
 [data-theme="light"] .Typewriter__cursor {
-  color: var(--primary-color) !important;
+  color: rgb(124, 58, 237) !important; /* RGB color for light theme */
 }
 
+/* Fix mobile positioning and sizing */
 @media (max-width: 767px) {
   .Typewriter__wrapper {
-    font-size: 1.4em !important;
+    font-size: 1.5em !important; /* Increased from 1.4em for better visibility */
     font-weight: 500 !important;
-    position: absolute !important;
+    position: relative !important; /* Changed from absolute to relative */
+    display: block !important;
+    color: rgb(79, 70, 229) !important; /* Ensure RGB color on mobile */
+    margin-top: 0.5rem !important;
+    line-height: 1.3 !important;
   }
   .Typewriter__cursor {
-    display: none !important;
+    font-size: 1.5em !important; /* Show cursor on mobile */
+    color: rgb(124, 58, 237) !important; /* RGB color for cursor */
+    display: inline !important; /* Show cursor on mobile */
   }
 }
 
@@ -4075,6 +4074,39 @@ button:focus {
   padding: 80px 0;
   min-height: 100vh;
   transition: all 0.3s ease-in-out;
+  position: relative;
+  z-index: 1; /* Lower z-index than navbar */
+}
+
+/* Ensure blog section children don't interfere with navbar */
+.blog-section *:not(.navbar):not(.navbar *) {
+  z-index: auto !important;
+  max-height: calc(100vh - 60px); /* Leave space for navbar */
+}
+
+/* CRITICAL FIX: Force navbar to be above blog page */
+body:has(.blog-section) .navbar,
+.blog-section ~ .navbar,
+.navbar {
+  z-index: 999999 !important;
+  position: fixed !important;
+  pointer-events: all !important;
+}
+
+/* Force all navbar children to be interactive on blog page */
+body:has(.blog-section) .navbar *,
+.blog-section ~ .navbar * {
+  pointer-events: all !important;
+  z-index: 999999 !important;
+}
+
+/* Prevent blog content from interfering with navbar */
+.blog-section .container-fluid,
+.blog-section .container {
+  position: relative !important;
+  z-index: 1 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .blog-search-container {
@@ -6015,12 +6047,13 @@ section#home,
   padding: 0;
   background: var(--background-primary);
   transition: var(--transition);
+  padding-top: 45px; /* Match navbar min-height for minimal gap */
 }
 
 .hero-container {
   position: relative;
-  padding: 0;
-  min-height: 100vh;
+  padding: 0; /* Remove padding */
+  min-height: calc(100vh - 45px); /* Account for smaller navbar */
 }
 
 .hero-bg {
@@ -6063,7 +6096,8 @@ section#home,
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 100px 0 60px;
+  padding: 10px 0 10px; /* Further reduced padding */
+  margin-top: 0; /* Remove margin - rely only on hero-section padding */
 }
 
 .hero-text {
@@ -6116,16 +6150,16 @@ section#home,
 }
 
 .hero-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.8rem, 4vw, 2.8rem); /* Reduced from clamp(2rem, 5vw, 3.5rem) */
   font-weight: 800;
   color: var(--text-primary);
-  line-height: 1.1;
-  margin-bottom: 1rem;
+  line-height: 1.2; /* Improved from 1.1 */
+  margin-bottom: 0.8rem; /* Reduced from 1rem */
   letter-spacing: -0.025em;
 }
 
 .name-highlight {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+  background: linear-gradient(135deg, rgb(79, 70, 229) 0%, rgb(124, 58, 237) 50%, rgb(168, 85, 247) 100%); /* RGB colors */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -6134,15 +6168,17 @@ section#home,
 }
 
 .hero-subtitle {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+  line-height: 1.4;
 }
 
 .role-text {
-  display: block;
-  font-size: 1.125rem;
+  display: inline-block; /* Changed from block to inline-block */
+  font-size: 1rem; /* Reduced from 1.125rem */
   font-weight: 600;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
+  color: rgb(79, 70, 229); /* RGB color */
+  margin-bottom: 0.3rem; /* Reduced from 0.5rem */
+  margin-right: 0.5rem; /* Add space before animated text */
   letter-spacing: 0.025em;
 }
 
@@ -7518,16 +7554,35 @@ section#home,
 
 /* Enhanced responsive adjustments for smaller sizes */
 @media (max-width: 768px) {
+  .hero-section {
+    padding-top: 45px !important; /* Match mobile navbar height */
+  }
+  
+  .hero-content {
+    padding: 5px 0 5px !important; /* Even more minimal padding on mobile */
+    margin-top: 0 !important; /* No additional margin */
+  }
+  
   .hero-title {
-    font-size: 1.8rem !important;
+    font-size: 1.6rem !important; /* Reduced from 1.8rem */
+    margin-bottom: 0.5rem !important;
   }
   
   .role-text {
     font-size: 0.9rem !important;
+    display: block !important; /* Stack on mobile */
+    margin-bottom: 0.2rem !important;
+    margin-right: 0 !important;
+  }
+  
+  .hero-subtitle {
+    margin-bottom: 0.8rem !important; /* Reduced spacing */
   }
   
   .hero-description {
-    font-size: 0.8rem !important;
+    font-size: 0.85rem !important; /* Slightly larger than 0.8rem */
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
   }
   
   .avatar-frame {
